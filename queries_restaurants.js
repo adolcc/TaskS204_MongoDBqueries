@@ -31,10 +31,14 @@ db.restaurants.find({
 // 6. Display the first 5 restaurants in the Bronx.
 db.restaurants.find({
   "borough": "Bronx"
+}).sort({
+  "rating": -1 
 }).limit(5);
 // 7. Display the next 5 restaurants after skipping the first 5 in the Bronx.
 db.restaurants.find({
   "borough": "Bronx"
+}).sort({
+  "name": 1 
 }).skip(5).limit(5);
 // 8. Find restaurants that have a score greater than 90.
 db.restaurants.find({
@@ -135,9 +139,9 @@ db.restaurants.find({
 });
 // 17. Find restaurants that belong to Bronx and prepared either American or Chinese dishes.
 db.restaurants.find({
-  "borough": "Bronx",
+  "borough": { $in: ["Bronx", "BRONX", "bronx"] },
   $or: [{
-    "cuisine": "American "
+    "cuisine": { $in: ["American", "American "] }
   }, {
     "cuisine": "Chinese"
   }]
@@ -187,10 +191,7 @@ db.restaurants.find({
 //     that prepare fish except 'American' and 'Chinese' or the restaurant name starts with 'Wil'.
 db.restaurants.find({
   $or: [{
-    "cuisine": "Seafood ",
-    "cuisine": {
-      $nin: ["American ", "Chinese"]
-    }
+    "cuisine": "Seafood "
   }, {
     "name": /^Wil/
   }]
@@ -265,7 +266,7 @@ db.restaurants.find({
 //     'coord' field is a Double (BSON type 1).
 db.restaurants.find({
   "address.coord": {
-    $type: 1
+    $type: 4
   }
 });
 // 30. Select restaurant_id, name, and grade for restaurants that return 0 as a
